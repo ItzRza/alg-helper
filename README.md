@@ -10,11 +10,11 @@ Algoritmika cavab köməkçisi (obfuscated build).
 
 ```js
 document.head.appendChild(Object.assign(document.createElement('script'), {
-  src: 'https://cdn.jsdelivr.net/gh/USERNAME/alg-helper@main/demo2.min.js'
+  src: 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@main/demo2.min.js'
 }));
 ```
 
-`USERNAME` yerinə GitHub istifadəçi adını yaz.
+Bu URL hazırdır.
 
 ## Hotkey-lər
 
@@ -26,3 +26,7 @@ document.head.appendChild(Object.assign(document.createElement('script'), {
 - Panel başlıqdan tutub sürüşdürülə bilər; sağ-alt küncdən ölçüsü dəyişilir.
 - Ayarlar, mövqe və ölçü `localStorage`-də saxlanılır.
 - Bu fayl obfuscate olunub; oxunaqlı mənbə repoda yoxdur.
+
+## Lisenziya
+
+Bu kod **proprietar**dır. Bütün hüquqlar qorunur. İcazəsiz kopyalama, yükləmə, dəyişdirmə, yayma və istifadə qadağandır. Ətraflı: [LICENSE](LICENSE).
