@@ -10,7 +10,7 @@ Algoritmika cavab köməkçisi (obfuscated build).
 
 ```js
 document.head.appendChild(Object.assign(document.createElement('script'), {
-  src: 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@v4/demo2.min.js'
+  src: 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@v5/demo2.min.js'
 }));
 ```
 
