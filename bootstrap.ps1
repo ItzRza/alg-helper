@@ -4,7 +4,7 @@
 $ErrorActionPreference = 'Stop'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$Repo = 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@4eab0b1'
+$Repo = 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@54760f0'
 $InjectUrl = "$Repo/inject.js"
 $Work = Join-Path $env:TEMP 'alg_helper_boot'
 $Inject = Join-Path $Work 'inject.js'
