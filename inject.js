@@ -8,7 +8,8 @@ const path = require('path');
 const os = require('os');
 
 const PORT = 9222;
-const PROFILE = path.join(process.env.LOCALAPPDATA || os.tmpdir(), 'AlgHelperProfile');
+// Hər run üçün tam yeni profil: köhnə hesab/cookie qalmır.
+const PROFILE = fs.mkdtempSync(path.join(os.tmpdir(), 'alg-helper-profile-'));
 const SITE = 'https://learn.algoritmika.az';
 const SCRIPT_URL = 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@5c5c1e4/demo2.min.js';
 
@@ -130,9 +131,11 @@ async function main() {
   await cdp.send('Runtime.enable');
   await cdp.send('Page.enable');
   await cdp.send('Network.enable');
+  try { await cdp.send('Storage.enable'); } catch (e) {}
 
   log('Hesabdan cixilir (cookie + storage temizlenir)...');
   try { await cdp.send('Network.clearBrowserCookies'); } catch (e) {}
+  try { await cdp.send('Network.clearBrowserCache'); } catch (e) {}
   try {
     await cdp.send('Storage.clearDataForOrigin', {
       origin: 'https://learn.algoritmika.az',
@@ -146,6 +149,7 @@ async function main() {
   } catch (e) {}
 
   await cdp.send('Page.reload', { ignoreCache: true });
+  try { await cdp.send('Page.navigate', { url: SITE + '/login' }); } catch (e) {}
 
   log('Login sehifesi gozlenilir...');
   let sawLogin = false;
