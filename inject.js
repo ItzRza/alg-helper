@@ -191,14 +191,24 @@ async function main() {
   await sleep(1500);
 
   let source;
-  try {
-    const r = await fetch(SCRIPT_URL);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    source = await r.text();
-  } catch (e) {
-    log('XETA: Skript yuklenmedi: ' + e.message);
-    cdp.close();
-    process.exit(1);
+  if (process.argv[2]) {
+    try {
+      source = fs.readFileSync(process.argv[2], 'utf8');
+    } catch (e) {
+      log('XETA: Skript oxunmadi: ' + e.message);
+      cdp.close();
+      process.exit(1);
+    }
+  } else {
+    try {
+      const r = await fetch(SCRIPT_URL);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      source = await r.text();
+    } catch (e) {
+      log('XETA: Skript yuklenmedi: ' + e.message);
+      cdp.close();
+      process.exit(1);
+    }
   }
 
   log('Skript sehifeye yeridilir...');

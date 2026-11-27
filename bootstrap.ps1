@@ -1,13 +1,17 @@
 # bootstrap.ps1 — Node.js yoxdursa portativ Node yükləyir, sonra inject.js-i işə salır.
 # Admin hüququ lazım deyil; sistemə daimi quraşdırma etmir.
 
+param(
+  [string]$InjectJs = '',
+  [string]$ScriptJs = ''
+)
+
 $ErrorActionPreference = 'Stop'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 $Repo = 'https://cdn.jsdelivr.net/gh/ItzRza/alg-helper@54760f0'
 $InjectUrl = "$Repo/inject.js"
 $Work = Join-Path $env:TEMP 'alg_helper_boot'
-$Inject = Join-Path $Work 'inject.js'
 $NodeDir = Join-Path $Work 'node'
 
 New-Item -ItemType Directory -Force -Path $Work | Out-Null
@@ -48,15 +52,22 @@ try {
   $nodeExe = Find-NodeExe
   Write-Host "Node: $nodeExe"
 
-  Write-Host 'inject.js yuklenir...'
-  Invoke-WebRequest -UseBasicParsing -Uri $InjectUrl -OutFile $Inject -TimeoutSec 60
+  if (-not $InjectJs) {
+    $InjectJs = Join-Path $Work 'inject.js'
+    Write-Host 'inject.js yuklenir...'
+    Invoke-WebRequest -UseBasicParsing -Uri $InjectUrl -OutFile $InjectJs -TimeoutSec 60
+  }
+  if (-not $ScriptJs) {
+    $ScriptJs = Join-Path $Work 'demo2.min.js'
+    Write-Host 'demo2.min.js yuklenir...'
+    Invoke-WebRequest -UseBasicParsing -Uri "$Repo/demo2.min.js" -OutFile $ScriptJs -TimeoutSec 60
+  }
 
   Write-Host 'Baslayir...'
-  & $nodeExe $Inject
+  & $nodeExe $InjectJs $ScriptJs
   Write-Host ("Bitdi (exit " + $LASTEXITCODE + ").")
 } catch {
   Write-Host ('XETA: ' + $_.Exception.Message)
 } finally {
-  try { Remove-Item $Inject -Force -ErrorAction SilentlyContinue } catch {}
-  try { Remove-Item $NodeDir -Recurse -Force -ErrorAction SilentlyContinue } catch {}
+  try { Remove-Item $Work -Recurse -Force -ErrorAction SilentlyContinue } catch {}
 }
